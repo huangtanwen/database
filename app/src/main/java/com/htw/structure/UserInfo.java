@@ -1,14 +1,16 @@
 package com.htw.structure;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class UserInfo extends RealmObject {
     private String id = null;
+    @PrimaryKey
     private String name = null;//姓名
     private String gender = null;//性别
     private int age = 0;//年龄
 
-    private UserInfo() {
+    public UserInfo() {
 
     }
 

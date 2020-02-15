@@ -8,7 +8,7 @@
         android:id="@+id/tv_show_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Hello World! \n"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -26,6 +26,14 @@
         android:text="删除数据"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btn_add" />
+
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查询数据"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btn_delete" />
 
 
 </android.support.constraint.ConstraintLayout>
