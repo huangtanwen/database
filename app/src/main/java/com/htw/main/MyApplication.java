@@ -10,15 +10,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
-        initRealm();
     }
 
-    private void initRealm() {
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("myRealm.realm")
-                .schemaVersion(0) //版本号
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(config);
-    }
 }

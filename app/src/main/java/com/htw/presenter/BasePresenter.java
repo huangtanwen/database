@@ -7,10 +7,21 @@ import com.htw.model.IModel;
 import com.htw.structure.UserInfo;
 import com.htw.view.IView;
 
+import org.reactivestreams.Publisher;
+
 import java.lang.ref.WeakReference;
 import java.util.Random;
 
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmResults;
+import io.realm.rx.RealmObservableFactory;
 
 public class BasePresenter<T> implements IPresenter {
     protected WeakReference mView;
@@ -28,13 +39,12 @@ public class BasePresenter<T> implements IPresenter {
         mModel.getRealm().close();
     }
 
-    public void createDataBase() {
-    }
-
     public void addData(UserInfo data) {
         mModel.getRealm().executeTransactionAsync(realm -> {
                     realm.copyToRealmOrUpdate(data);
-                }, () -> showTip(data.getName() + ": 插入成功"),
+                }, () -> {
+                    showTip(data.getName() + ": 插入成功");
+                },
                 error -> showTip(data.getName() + ": 插入失败错误原因：" + error));
     }
 
@@ -59,5 +69,19 @@ public class BasePresenter<T> implements IPresenter {
 
     private void showTip(String msg) {
         ((IView) mView.get()).showTip(msg);
+    }
+
+    private void registerDatabaseUpdate() {
+        mModel.getRealm()
+                .where(UserInfo.class)
+                .findAllAsync()
+                .asFlowable()
+                .filter(userInfos -> userInfos.isLoaded())
+                .doOnNext(userInfos -> {
+                    for (UserInfo info : userInfos) {
+                        Log.e("huangtanwen", "name " + info.getName() + "；age " + info.getAge() + "; " + Thread.currentThread().getName());
+                    }
+                })
+                .subscribe(userInfos -> showTip("查询成功，数据 " + userInfos.size() + "条"));
     }
 }

@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity {
                     ((BasePresenter) mPresenter).addData(new UserInfo.Builder()
                             .id("ID_" + new Random().nextInt())
                             .name(Util.getRandomJianHan())
-                            .gender("男")
+                            .gender(new Random().nextInt(1) == 0 ? "男" : "女")
                             .age(new Random().nextInt(99) + 1)
                             .build());
                 }));
